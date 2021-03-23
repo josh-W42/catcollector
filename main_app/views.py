@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.http import HttpResponse, HttpResponseRedirect
 
 # import models
 from .models import Cat
+# import feeding form
+from .forms import FeedingForm
 
 # import Django form classes
 # these handle CRUD for us
@@ -47,7 +49,21 @@ def cats_show(request, cat_id):
     # we get access to that cat_id variable
     # query for the specific cat clicked
     cat = Cat.objects.get(id=cat_id)
-    return render(request, 'cats/show.html', { 'cat': cat })
+    # instantiate FeedingForm to be rendered in the template
+    feeding_form = FeedingForm()
+    return render(request, 'cats/show.html', { 'cat': cat, 'feeding_form': feeding_form })
+
+def add_feeding(request, cat_id):
+    # create the Modelorm using the data in req.POST
+    form = FeedingForm(request.POST)
+    # add our catId to it and check valid
+    if form.is_valid():
+        # not full in there yet
+        new_feeding = form.save(commit=False)
+        new_feeding.cat_id = cat_id
+        new_feeding.save()
+    # we can pass values with redirects in Django
+    return redirect('cats_show', cat_id=cat_id)
 
 # Instrcutions
 # 1. Update index view function to look similar to the contact view function
