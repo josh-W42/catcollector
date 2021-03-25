@@ -6,10 +6,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 # import models
 from .models import Cat
 # access the FeedingForm
-from .forms import FeedingForm
+from .forms import FeedingForm, CatForm
 
 # import Django form classes
 # these handle CRUD for us
+# we will comment this one out
 class CatCreate(CreateView):
   model = Cat
   fields = '__all__'
@@ -55,6 +56,8 @@ def cats_show(request, cat_id):
       'cat': cat,
       'feeding_form': feeding_form 
     })
+
+# build out cats_create custom to use the userId
 
 # FEEDING
 def add_feeding(request, pk):
