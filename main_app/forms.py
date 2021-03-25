@@ -7,3 +7,9 @@ class FeedingForm(forms.ModelForm):
         # which model
         model = Feeding
         fields = ['date', 'meal']
+
+# added a catform
+class CatForm(forms.ModelForm):
+    class Meta:
+        model = Cat
+        fields = ('name', 'breed', 'description', 'age')
